@@ -1,17 +1,17 @@
-var map = L.map('map').setView([38.639005110722664, -90.2845213858883], 12);
+var map = L.map('map').setView([37.76423006921716, -122.42960396594103], 11);
 
-L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}{r}.{ext}', {
-	attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+var Stamen_Terrain = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
+	attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
 	subdomains: 'abcd',
 	minZoom: 0,
-	maxZoom: 20,
+	maxZoom: 18,
 	ext: 'png'
 }).addTo(map);
 
- $.getJSON("https://raw.githubusercontent.com/robertocoral/GIS5091-assignment2-part1/main/restaurants.geojson",function(data){
-    L.geoJSON(data, {
-  	onEachFeature: function (feature, layer) {
-    		layer.bindPopup('<h3>'+feature.properties.Restaurant+'</h3>');
-  		}
-	}).addTo(map);
- });
+$.getJSON('https://raw.githubusercontent.com/gbrunner/adv-programming-for-gis-and-rs/master/Web%20Development%20Module/Unit%201%20-%20GitHub%20and%20Leaflet/sf_crime.geojson', function(data) {
+  var coordinatesOnly = data.features.map(function(feature) {
+    return [feature.geometry.coordinates[1], feature.geometry.coordinates[0], 1];
+  });
+
+  var heat = L.heatLayer(coordinatesOnly).addTo(map);
+});
